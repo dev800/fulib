@@ -1,0 +1,93 @@
+msgid "hello world"
+msgstr "你好世界！"
+
+msgid "error transaction_exception"
+msgstr "数据处理失败"
+
+msgid "Not Found"
+msgstr "不存在"
+
+msgid "Not Blank"
+msgstr "应该为空"
+
+msgid "Not Present"
+msgstr "不能为空"
+
+msgid "Must be a number"
+msgstr "必须是一个数字"
+
+msgid "must have a length of %{length}"
+msgstr "长度必须为%{length}"
+
+msgid "must have a length of no more than %{max}"
+msgstr "最大长度为%{max}"
+
+msgid "must have a length of at least %{min}"
+msgstr "最小长度为%{min}"
+
+msgid "must have a length between %{min} and %{max}"
+msgstr "长度必须在%{min}~%{max}之间"
+
+msgid "must have a value of %{value}"
+msgstr "值必须为%{value}"
+
+msgid "must have a value of no large than %{max}"
+msgstr "最大值为%{max}"
+
+msgid "must have a value of at least %{min}"
+msgstr "最小值为%{min}"
+
+msgid "must have a value between %{min} and %{max}"
+msgstr "必须在%{min}~%{max}之间"
+
+msgid "must have the correct format"
+msgstr "格式不正确"
+
+msgid "must be a list"
+msgstr "必须是一个数组"
+
+msgid "you put invalid not inclusion values: %{invalid_values}"
+msgstr "输入了可选范围外的值: %{invalid_values}"
+
+msgid "you put invalid not exclusion values: %{invalid_values}"
+msgstr "输入了必须排除的值: %{invalid_values}"
+
+msgid "must be items of %{list}"
+msgstr "值不在可选范围内%{list}"
+
+msgid "must be one of %{list}"
+msgstr "值必须在可选范围内%{list}"
+
+msgid "must not be one of %{list}"
+msgstr "值必须不能为%{list}"
+
+msgid "cannot have the email format"
+msgstr "不能是邮箱格式"
+
+msgid "must have the email format"
+msgstr "必须是邮箱格式"
+
+msgid "must have the integer format"
+msgstr "必须是一个整数"
+
+msgid "cannot have the integer format"
+msgstr "不能是一个整数"
+
+msgid "must have the pure number format"
+msgstr "必须是一个纯数字"
+
+msgid "cannot have the pure number format"
+msgstr "不能是一个纯数字"
+
+msgid "must have the url format"
+msgstr "必须是一个URL链接"
+
+msgid "cannot have the url format"
+msgstr "不能是一个URL链接"
+
+msgid "must acceptance"
+msgstr "必须接受"
+
+msgid "cannot acceptance"
+msgstr "不能接受"
+

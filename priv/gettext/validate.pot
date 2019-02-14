@@ -1,0 +1,62 @@
+msgid "hello world"
+msgstr "hello world"
+
+msgid "error transaction_exception"
+msgstr "Translation Exception"
+
+msgid "Not Found"
+msgstr "Not Found"
+
+msgid "Not Blank"
+msgstr "Not Blank"
+
+msgid "Not Present"
+msgstr "Not Present"
+
+msgid "Must be a number"
+msgstr "Must be a number"
+
+msgid "must have a length of %{length}"
+msgstr "must have a length of %{length}"
+
+msgid "must have a length of no more than %{max}"
+msgstr "must have a length of no more than %{max}"
+
+msgid "must have a length of at least %{min}"
+msgstr "must have a length of at least %{min}"
+
+msgid "must have a length between %{min} and %{max}"
+msgstr "must have a length between %{min} and %{max}"
+
+msgid "must have the correct format"
+msgstr "must have the correct format"
+
+msgid "must have the email format"
+msgstr "must have the email format"
+
+msgid "must have a value of %{value}"
+msgstr "must have a value of %{value}"
+
+msgid "must have a value of no large than %{max}"
+msgstr "must have a value of no large than %{max}"
+
+msgid "must have a value of at least %{min}"
+msgstr "must have a value of at least %{min}"
+
+msgid "must have a value between %{min} and %{max}"
+msgstr "must have a value between %{min} and %{max}"
+
+msgid "must be a list"
+msgstr "must be a list"
+
+msgid "you put invalid not inclusion values: %{invalid_values}"
+msgstr "you put invalid not inclusion values: %{invalid_values}"
+
+msgid "you put invalid not exclusion values: %{invalid_values}"
+msgstr "you put invalid not exclusion values: %{invalid_values}"
+
+msgid "must be items of %{list}"
+msgstr "must be items of %{list}"
+
+msgid "must be one of %{list}"
+msgstr "must be one of %{list}"

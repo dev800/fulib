@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Language: en"
+
+msgid "label.more"
+msgstr "More"
+
+msgid "label.please_input_keywords"
+msgstr "Please input keywords"
+
+msgid "label.search"
+msgstr "Search"
+
+msgid "label.paginater.goto"
+msgstr "Goto"
+
+msgid "label.paginater.page"
+msgstr "page"
+
+msgid "label.paginater.jump"
+msgstr "jump"
+
+msgid "label.paginater.next_page"
+msgstr "Next"
+
+msgid "label.paginater.previous_page"
+msgstr "Previous"
+
+msgid "label.paginater.last_page"
+msgstr "Last »"
+
+msgid "label.paginater.first_page"
+msgstr "« First"

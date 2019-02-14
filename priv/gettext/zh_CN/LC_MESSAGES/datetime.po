@@ -1,0 +1,62 @@
+## `msgid`s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove `msgid`s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use `mix gettext.extract --merge` or `mix gettext.merge`
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: zh_CN\n"
+
+msgid "Today %{time}"
+msgstr "今天 %{time}"
+
+msgid "Yesterday %{time}"
+msgstr "昨天 %{time}"
+
+msgid "The day before yesterday %{time}"
+msgstr "前天 %{time}"
+
+msgid "The day after tomorrow %{time}"
+msgstr "后天 %{time}"
+
+msgid "Tomorrow %{time}"
+msgstr "明天 %{time}"
+
+msgid "%{diff_seconds} seconds ago"
+msgstr "刚刚"
+
+msgid "%{diff_minutes} minutes ago"
+msgstr "%{diff_minutes}分钟前"
+
+msgid "%{diff_hours} hours ago"
+msgstr "%{diff_hours}小时前"
+
+msgid "1 days ago"
+msgstr "昨天"
+
+msgid "2 days ago"
+msgstr "2天前"
+
+msgid "%{diff_days} days ago"
+msgstr "%{diff_days}天前"
+
+msgid "%{diff_seconds} seconds after"
+msgstr "马上"
+
+msgid "%{diff_minutes} minutes after"
+msgstr "%{diff_minutes}分钟后"
+
+msgid "%{diff_hours} hours after"
+msgstr "%{diff_hours}小时后"
+
+msgid "1 days after"
+msgstr "明天"
+
+msgid "2 days after"
+msgstr "2天后"
+
+msgid "%{diff_days} days after"
+msgstr "%{diff_days}天后"

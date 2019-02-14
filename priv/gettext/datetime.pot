@@ -1,0 +1,57 @@
+### mix gettext.merge priv/translations --locale zh_CN
+### mix gettext.merge priv/translations --locale en
+
+msgid ""
+msgstr ""
+"Language: INSERT LANGUAGE HERE\n"
+
+msgid "Today %{time}"
+msgstr ""
+
+msgid "Yesterday %{time}"
+msgstr ""
+
+msgid "The day before yesterday %{time}"
+msgstr ""
+
+msgid "The day after tomorrow %{time}"
+msgstr ""
+
+msgid "Tomorrow %{time}"
+msgstr ""
+
+msgid "%{diff_seconds} seconds ago"
+msgstr ""
+
+msgid "%{diff_minutes} minutes ago"
+msgstr ""
+
+msgid "%{diff_hours} hours ago"
+msgstr ""
+
+msgid "1 days ago"
+msgstr ""
+
+msgid "2 days ago"
+msgstr ""
+
+msgid "%{diff_days} days ago"
+msgstr ""
+
+msgid "%{diff_seconds} seconds after"
+msgstr ""
+
+msgid "%{diff_minutes} minutes after"
+msgstr ""
+
+msgid "%{diff_hours} hours after"
+msgstr ""
+
+msgid "1 days after"
+msgstr ""
+
+msgid "2 days after"
+msgstr ""
+
+msgid "%{diff_days} days after"
+msgstr ""

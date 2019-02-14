@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Language: zh"
+
+msgid "label.more"
+msgstr "更多"
+
+msgid "label.please_input_keywords"
+msgstr "请输入要搜索的关键词"
+
+msgid "label.search"
+msgstr "搜索"
+
+msgid "label.paginater.goto"
+msgstr "到"
+
+msgid "label.paginater.page"
+msgstr "页"
+
+msgid "label.paginater.jump"
+msgstr "跳转"
+
+msgid "label.paginater.next_page"
+msgstr "下一页"
+
+msgid "label.paginater.previous_page"
+msgstr "上一页"
+
+msgid "label.paginater.last_page"
+msgstr "尾页 »"
+
+msgid "label.paginater.first_page"
+msgstr "« 第一页"
