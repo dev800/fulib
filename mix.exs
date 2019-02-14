@@ -5,7 +5,7 @@ defmodule Fulib.Mixfile do
     [
       app: :fulib,
       name: "Fulib",
-      version: "0.1.1",
+      version: "0.1.2",
       elixir: "~> 1.4",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -73,7 +73,7 @@ defmodule Fulib.Mixfile do
 
   defp package do
     %{
-      files: ["lib", "priv", "mix.exs", "README.md"],
+      files: ["lib", "priv", "mix.exs", "README.md", "config/config.exs"],
       maintainers: ["happy"],
       licenses: ["BSD 3-Clause"],
       links: %{"Github" => "https://github.com/dev800/fulib"}
