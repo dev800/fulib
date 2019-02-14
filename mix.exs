@@ -5,7 +5,7 @@ defmodule Fulib.Mixfile do
     [
       app: :fulib,
       name: "Fulib",
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.4",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -31,7 +31,6 @@ defmodule Fulib.Mixfile do
         :nebulex_redis_adapter,
         :floki,
         :recase,
-        :memcache,
         :ranch,
         :cowboy,
         :earmark,
@@ -52,7 +51,6 @@ defmodule Fulib.Mixfile do
       {:nebulex, "~> 1.0"},
       {:nebulex_redis_adapter, "~> 1.0"},
       {:dataloader, "~> 1.0"},
-      {:memcache, "~> 0.0"},
       {:httpoison, "~> 1.0"},
       {:gettext, "~> 0.13"},
       {:tiny_util, "~> 0.2"},
@@ -75,7 +73,7 @@ defmodule Fulib.Mixfile do
 
   defp package do
     %{
-      files: ["lib", "priv", "mix.exs", "README.md", "src"],
+      files: ["lib", "priv", "mix.exs", "README.md"],
       maintainers: ["happy"],
       licenses: ["BSD 3-Clause"],
       links: %{"Github" => "https://github.com/dev800/fulib"}
