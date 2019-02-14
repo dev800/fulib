@@ -32,4 +32,6 @@ config :fulib, :default_utc_offset, 28_800
 # 默认中文
 config :fulib, Fulib.Gettext, default_locale: "zh_CN"
 
-import_config "#{Mix.env()}.exs"
+if File.exists?("#{Mix.env()}.exs") do
+  import_config "#{Mix.env()}.exs"
+end
