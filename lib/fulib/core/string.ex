@@ -1,6 +1,16 @@
 defmodule Fulib.String do
   @crypto_secret Application.get_env(:fulib, :crypto_secret) || "ca1d53450d12ee57f900ddc1814bb7c4"
 
+  @doc """
+  使用liquid进行渲染
+
+  urls:
+
+  * https://github.com/bettyblocks/liquid-elixir
+  * https://hex.pm/packages/liquid
+  * https://shopify.github.io/liquid/basics/introduction/
+
+  """
   def liquid_render(template \\ "", data \\ %{}) do
     template
     |> Liquid.Template.parse()
