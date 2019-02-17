@@ -5,7 +5,7 @@ defmodule Fulib.Mixfile do
     [
       app: :fulib,
       name: "Fulib",
-      version: "0.1.6",
+      version: "0.1.7",
       elixir: "~> 1.4",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -45,13 +45,15 @@ defmodule Fulib.Mixfile do
         :logger,
         :logger_file_backend,
         :gettext,
-        :gen_stage
+        :gen_stage,
+        :liquid
       ]
     ]
   end
 
   defp deps do
     [
+      {:liquid, "~> 0.9"},
       {:nebulex, "~> 1.0"},
       {:gen_stage, "~> 0.14"},
       {:nebulex_redis_adapter, "~> 1.0"},

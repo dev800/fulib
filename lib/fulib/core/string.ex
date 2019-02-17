@@ -1,6 +1,21 @@
 defmodule Fulib.String do
   @crypto_secret Application.get_env(:fulib, :crypto_secret) || "ca1d53450d12ee57f900ddc1814bb7c4"
 
+  def liquid_render(template \\ "", data \\ %{}) do
+    template
+    |> Liquid.Template.parse()
+    |> Liquid.Template.render(Fulib.Map.string_keys_deep!(data))
+  end
+
+  def liquid_render!(template \\ "", data \\ %{}) do
+    template
+    |> liquid_render(data)
+    |> case do
+      {:ok, rendered, _} -> rendered
+      _ -> nil
+    end
+  end
+
   @doc """
   获取字符串的长度
 
