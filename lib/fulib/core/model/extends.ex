@@ -1072,6 +1072,22 @@ defmodule Fulib.Model.Extends do
             |> __MODULE__.repo().update
           end
 
+          def with_undeleted() do
+            Ecto.Query.from(records in @extends_module) |> with_undeleted()
+          end
+
+          def with_undeleted(query) do
+            Fulib.Ecto.SoftDelete.Query.with_undeleted(query)
+          end
+
+          def with_deleted() do
+            Ecto.Query.from(records in @extends_module) |> with_deleted()
+          end
+
+          def with_deleted(query) do
+            Fulib.Ecto.SoftDelete.Query.with_deleted(query)
+          end
+
           defp _get_array_value(query, k, :enums_type, v) do
             @extends_module.__changeset__()[k].dump(v)
             |> case do
