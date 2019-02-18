@@ -68,7 +68,7 @@ defmodule Fulib.List do
 
   # nil 依然为 nil
   Fulib.List.atoms!(nil) => nil
-  
+
   # [] 依然为 []
   Fulib.List.atoms!([]) => []
   ```
@@ -108,6 +108,26 @@ defmodule Fulib.List do
 
   @doc """
   随机取一个或多个元素
+
+  ## list
+  来源列表
+
+  ## count
+  提取的个数，nil的时候，只取一个, 且返回一个项目，而非数组
+
+  ## repeat
+  是否允许重复
+
+  * `true` 允许
+  * `false` 不允许[默认]
+
+  ## Examples
+
+  ```
+  Fulib.List.sample([1, 2, 3])
+  Fulib.List.sample([1, 2, 3], 2)
+  Fulib.List.sample([1, 2, 3], 2, true)
+  ```
   """
   def sample([]), do: nil
   def sample([item]), do: item
@@ -117,7 +137,17 @@ defmodule Fulib.List do
   end
 
   def sample(list, count) do
+    sample(list, count, false)
+  end
+
+  def sample(list, count, false) do
     Enum.take_random(list, count)
+  end
+
+  def sample(list, count, true) do
+    Enum.reduce(1..count, [], fn _, acc ->
+      acc ++ sample(list, 1)
+    end)
   end
 
   def sort_by_values(records, values, field_key) do
@@ -145,7 +175,7 @@ defmodule Fulib.List do
     count = min([count, length(list)])
     list |> Enum.slice(-count, count)
   end
-  
+
   @doc """
   获取第一个元素
   """
