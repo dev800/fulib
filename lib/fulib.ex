@@ -198,6 +198,8 @@ defmodule Fulib do
   def reverse(enumerable), do: Enum.reverse(enumerable)
 
   #### Begin Core #############################
+  defdelegate validate(value, value_type, rules \\ %{}), to: Fulib.Validate, as: :validate_value
+
   defdelegate singularize(word), to: Fulib.String.Pluralize, as: :singularize
   defdelegate pluralize(word), to: Fulib.String.Pluralize, as: :pluralize
   defdelegate inflect(word, n), to: Fulib.String.Pluralize, as: :inflect

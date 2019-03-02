@@ -1,23 +1,25 @@
 defmodule Fulib.Value do
-  def allow_nil?(conf) do
-    conf |> Fulib.get(:allow_nil, true) |> Fulib.to_boolean()
+  def allow_nil?(opts) do
+    opts |> Fulib.get(:allow_nil, true) |> Fulib.to_boolean()
   end
 
-  def filter(value, _conf) do
+  def filter(value, _opts) do
     value
   end
 
-  def convert_to(value, type, conf \\ [])
+  def convert_to(value, type, opts \\ [])
 
-  def convert_to(value, nil, _conf) do
+  def convert_to(value, nil, _opts) do
     value
   end
 
   @doc """
   字符串数组，为 ，;, \n \t 分隔的字符数组
+
+  :csl # description: "Comma-Separated List" do
   """
-  def convert_to(value, :string_array, conf) do
-    unless is_nil(value) && allow_nil?(conf) do
+  def convert_to(value, :csl, opts) do
+    unless is_nil(value) && allow_nil?(opts) do
       value =
         cond do
           is_list(value) ->
@@ -32,11 +34,11 @@ defmodule Fulib.Value do
             value
         end
 
-      convert_to(value, {:array, :string}, conf)
+      convert_to(value, {:array, :string}, opts)
     end
   end
 
-  def convert_to(value, :utc_datetime, conf) do
+  def convert_to(value, :utc_datetime, opts) do
     cond do
       Fulib.blank?(value) ->
         nil
@@ -47,46 +49,46 @@ defmodule Fulib.Value do
       true ->
         value
     end
-    |> filter(conf)
+    |> filter(opts)
   end
 
-  def convert_to(value, :boolean, conf) do
-    unless is_nil(value) && allow_nil?(conf) do
-      value |> Fulib.to_boolean() |> filter(conf)
+  def convert_to(value, :boolean, opts) do
+    unless is_nil(value) && allow_nil?(opts) do
+      value |> Fulib.to_boolean() |> filter(opts)
     end
   end
 
-  def convert_to(value, :string, conf) do
-    unless is_nil(value) && allow_nil?(conf) do
-      value |> Fulib.to_s() |> filter(conf)
+  def convert_to(value, :string, opts) do
+    unless is_nil(value) && allow_nil?(opts) do
+      value |> Fulib.to_s() |> filter(opts)
     end
   end
 
-  def convert_to(value, :atom, conf) do
-    unless is_nil(value) && allow_nil?(conf) do
-      value |> Fulib.to_atom() |> filter(conf)
+  def convert_to(value, :atom, opts) do
+    unless is_nil(value) && allow_nil?(opts) do
+      value |> Fulib.to_atom() |> filter(opts)
     end
   end
 
-  def convert_to(value, :integer, conf) do
-    unless is_nil(value) && allow_nil?(conf) do
-      value |> Fulib.to_i() |> filter(conf)
+  def convert_to(value, :integer, opts) do
+    unless is_nil(value) && allow_nil?(opts) do
+      value |> Fulib.to_i() |> filter(opts)
     end
   end
 
-  def convert_to(value, :float, conf) do
-    unless is_nil(value) && allow_nil?(conf) do
-      value |> Fulib.to_f() |> filter(conf)
+  def convert_to(value, :float, opts) do
+    unless is_nil(value) && allow_nil?(opts) do
+      value |> Fulib.to_f() |> filter(opts)
     end
   end
 
-  def convert_to(value, {:array, type}, conf) do
-    unless is_nil(value) && allow_nil?(conf) do
+  def convert_to(value, {:array, type}, opts) do
+    unless is_nil(value) && allow_nil?(opts) do
       value
       |> Fulib.to_array()
-      |> Enum.map(fn i -> convert_to(i, type, conf) end)
+      |> Enum.map(fn i -> convert_to(i, type, opts) end)
     end
   end
 
-  def convert_to(value, _type, _conf), do: value
+  def convert_to(value, _type, _opts), do: value
 end

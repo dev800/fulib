@@ -9,7 +9,7 @@ defmodule Fulib.Const do
   @mobile_number_formats [
     cn: %{
       length: 11,
-      regex: ~r/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/u
+      regex: ~r/^(1[3-9][0-9])\d{8}$/u
     }
   ]
   @website_url_regex ~r"^((http|https)\:\/\/|[a-zA-Z0-9\.\-]+\.)[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\=\&\.\?\,\'\/\\\+&amp;%\$#_]*)?"

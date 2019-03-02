@@ -28,6 +28,18 @@ msgstr "must have a length of at least %{min}"
 msgid "must have a length between %{min} and %{max}"
 msgstr "must have a length between %{min} and %{max}"
 
+msgid "must have a length of %{length} or %{length_chars}"
+msgstr "must have a length of %{length} or %{length_chars}"
+
+msgid "must have a length of no more than %{max} or %{max_chars}"
+msgstr "must have a length of no more than %{max} or %{max_chars}"
+
+msgid "must have a length of at least %{min} or %{min_chars}"
+msgstr "must have a length of at least %{min} or %{min_chars}"
+
+msgid "must have a length between %{min} or %{min_chars} and %{min_chars} or %{max_chars}"
+msgstr "must have a length between %{min} or %{min_chars} and %{min_chars} or %{max_chars}"
+
 msgid "must have the correct format"
 msgstr "must have the correct format"
 

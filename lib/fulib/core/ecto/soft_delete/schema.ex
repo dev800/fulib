@@ -11,11 +11,11 @@ defmodule Fulib.Ecto.SoftDelete.Schema do
 
         schema "users" do
           field :email, :string
-          soft_delete_field()
+          soft_delete_fields()
         end
       end
   """
-  defmacro soft_delete_field do
+  defmacro soft_delete_fields do
     quote do
       field(:deleted_at, :utc_datetime)
     end

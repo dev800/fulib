@@ -33,17 +33,17 @@ defmodule Fulib.String do
   * 中文字符算2位(全角)
   * emoji算2位
   """
-  def chars_length(string, _opts \\ []) do
+  def chars_length(string, opts \\ []) do
     string
-    |> String.split("", trim: true)
-    |> Enum.reduce(0, fn char, len ->
+    |> String.split("", trim: Fulib.get(opts, :trim, true))
+    |> Enum.reduce(0, fn char, length ->
       current_length =
         case char |> byte_size() do
           1 -> 1
           _ -> 2
         end
 
-      len + current_length
+      length + current_length
     end)
   end
 

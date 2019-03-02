@@ -46,10 +46,84 @@ defmodule Fulib.Model.Extends do
       Module.register_attribute(extends_module, :polymorphic_mapping, accumulate: false)
       Module.put_attribute(extends_module, :polymorphic_mapping, polymorphic_mapping)
 
+      # Begin uuid_default_length
+      uuid_default_length = opts[:uuid_default_length] || 10
+
+      Module.register_attribute(extends_module, :uuid_default_length, accumulate: false)
+      Module.put_attribute(extends_module, :uuid_default_length, uuid_default_length)
+
+      # Begin fields_rule
+      fields_rule = (opts[:fields_rule] || %{}) |> Map.new()
+
+      Module.register_attribute(extends_module, :fields_rule, accumulate: false)
+      Module.put_attribute(extends_module, :fields_rule, fields_rule)
+
       Module.eval_quoted(
         @extends_module,
         quote do
           require Ecto.Query
+
+          def fields_rule, do: @fields_rule
+
+          def field_rule(field) do
+            @fields_rule |> Fulib.get(field, %{})
+          end
+
+          def field_rule(field, rule_key) do
+            field
+            |> field_rule()
+            |> Fulib.get(rule_key)
+          end
+
+          def validate_fields(changeset) do
+            changeset |> validate_fields(@fields_rule)
+          end
+
+          def validate_fields(changeset, rules) do
+            changeset |> Fulib.Validate.validate_changeset(rules)
+          end
+
+          @doc """
+          生成uuid
+
+          ## Params
+
+          ### opts
+
+          * `:format`
+          * `:field`
+          * `:length`
+          """
+          def generate_uuid(opts \\ []) do
+            format = opts |> Fulib.get(:format, :dec)
+            field = opts |> Fulib.get(:field, :uuid) |> Fulib.to_atom()
+            length = opts |> Fulib.get(:length, @uuid_default_length) |> Fulib.to_i()
+            uuid = _generate_uuid!(length, format)
+
+            []
+            |> Keyword.put(field, uuid)
+            |> @extends_module.get_by()
+            |> case do
+              nil ->
+                uuid
+
+              _ ->
+                generate_uuid(opts)
+            end
+          end
+
+          defp _generate_uuid!(length, :hex) do
+            Fulib.SecureRandom.hex((length / 2) |> Fulib.to_i())
+          end
+
+          defp _generate_uuid!(length, _) do
+            :math.pow(10, length)
+            |> Fulib.to_i()
+            |> Kernel.-(1)
+            |> :rand.uniform()
+            |> Fulib.to_s()
+            |> String.pad_trailing(length, "0")
+          end
 
           def target_type_value do
             if value = @polymorphic_mapping |> get_in(["#{target_module()}", :value]) do
