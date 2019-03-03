@@ -3,6 +3,12 @@ defmodule Fulib do
   Documentation for Fulib.
   """
 
+  def each_do(item, opts \\ %{}) do
+    if is_function(opts[:each_do]) do
+      opts[:each_do].(item)
+    end
+  end
+
   def i18n(msgid, bindings \\ %{}) do
     Fulib.Translator.dgettext("default", msgid, bindings)
   end

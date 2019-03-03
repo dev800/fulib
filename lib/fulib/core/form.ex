@@ -73,7 +73,7 @@ defmodule Fulib.Form do
   @doc """
   ## opts
 
-  ` `:compact` true[true]/false 是否将非空字段过滤掉
+  * `:compact` true[true]/false 是否将非空字段过滤掉
   * `:filter_false` true/false[默认] 是否过滤掉false值
   * `:filter_presence` true/false[默认] 是否过滤空字符串
   """
