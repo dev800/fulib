@@ -109,6 +109,8 @@ defmodule Fulib.String do
     value == %{}
   end
 
+  def blank?(~r//), do: true
+
   def blank?(""), do: true
   def blank?(nil), do: true
 
