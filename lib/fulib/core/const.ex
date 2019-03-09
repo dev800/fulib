@@ -1,17 +1,20 @@
 defmodule Fulib.Const do
   #### http://elixir-lang.org/docs/master/elixir/Regex.html
   @ip_regex ~r"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$"
+
   @email_regex ~r"\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z"
   @pure_number_regex ~r"\A[0-9]*\z"
   @integer_regex ~r"^-?[1-9]\d*$"
   @words_regex ~r/[\w-_0-9]+/u
   @email_regex ~r"\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z"
+
   @mobile_number_formats [
     cn: %{
       length: 11,
       regex: ~r/^(1[3-9][0-9])\d{8}$/u
     }
   ]
+
   @website_url_regex ~r"^((http|https)\:\/\/|[a-zA-Z0-9\.\-]+\.)[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\=\&\.\?\,\'\/\\\+&amp;%\$#_]*)?"
 
   @spider_regex ~r(spider|bot|crawler|ysearch\/slurp)
@@ -326,6 +329,9 @@ defmodule Fulib.Const do
     "(:(0-9)*)*(\/[a-zA-Z0-9\-\=\&\.\?\,\'\/\\\+&amp;%\$#_]*)?"
   ]
 
+  @match_url_regex Regex.compile!("^#{@scan_url_regex |> Enum.join()}")
+  @scan_url_regex Regex.compile!(@scan_url_regex |> Enum.join())
+
   def spider_regex, do: @spider_regex
 
   @doc "IO地址的正则表达式"
@@ -338,8 +344,16 @@ defmodule Fulib.Const do
   @doc "电子邮箱的正则表达式"
   def email_regex, do: @email_regex
 
+  def email_match?(str) do
+    @email_regex |> Regex.match?(str)
+  end
+
   @doc "纯数字的正则表达式"
   def pure_number_regex, do: @pure_number_regex
+
+  def pure_number_match?(str) do
+    @pure_number_regex |> Regex.match?(str)
+  end
 
   @doc "整数的正则表达式"
   def integer_regex, do: @integer_regex
@@ -348,15 +362,17 @@ defmodule Fulib.Const do
   def words_regex, do: @words_regex
 
   @doc "只匹配文字，下划线和中划线, 数字"
-  def name_regex_match?(str) do
-    String.replace(str, @words_regex, "") |> String.length() == 0
+  def words_regex_match?(str) do
+    str
+    |> String.replace(@words_regex, "")
+    |> Fulib.blank?()
   end
 
   @doc "半角和全角得空格"
   def space_strings, do: [" ", "　"]
 
   @doc "匹配URL的正则表达式"
-  def match_url_regex, do: Regex.compile!("^#{@scan_url_regex |> Enum.join()}")
+  def match_url_regex, do: @match_url_regex
 
   @doc """
   扫描出URL的正则表达式
@@ -366,7 +382,7 @@ defmodule Fulib.Const do
   * http://stackoverflow.com/questions/1323283/how-to-match-url-in-c
   ```
   """
-  def scan_url_regex, do: Regex.compile!(@scan_url_regex |> Enum.join())
+  def scan_url_regex, do: @scan_url_regex
 
   @doc "web url format"
   def website_url_regex, do: @website_url_regex

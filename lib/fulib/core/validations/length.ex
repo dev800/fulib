@@ -24,8 +24,8 @@ defmodule Fulib.Validations.Length do
                 Fulib.Translator.dgettext(
                   "validate",
                   "must have a length of %{length} or %{length_chars}",
-                  length_chars: same,
-                  length: same * 2
+                  length_chars: (same / 2) |> Fulib.to_i(),
+                  length: same
                 )
               else
                 Fulib.Translator.dgettext(
@@ -47,8 +47,8 @@ defmodule Fulib.Validations.Length do
                 Fulib.Translator.dgettext(
                   "validate",
                   "must have a length of no more than %{max} or %{max_chars}",
-                  max_chars: max,
-                  max: max * 2
+                  max_chars: (max / 2) |> Fulib.to_i(),
+                  max: max
                 )
               else
                 Fulib.Translator.dgettext(
@@ -70,8 +70,8 @@ defmodule Fulib.Validations.Length do
                 Fulib.Translator.dgettext(
                   "validate",
                   "must have a length of at least %{min} or %{min_chars}",
-                  min_chars: min,
-                  min: min * 2
+                  min_chars: (min / 2) |> Fulib.to_i(),
+                  min: min
                 )
               else
                 Fulib.Translator.dgettext(
@@ -93,10 +93,10 @@ defmodule Fulib.Validations.Length do
                 Fulib.Translator.dgettext(
                   "validate",
                   "must have a length between %{min} or %{min_chars} and %{min_chars} or %{max_chars}",
-                  min: chars,
-                  max: chars,
-                  min: min * 2,
-                  max: max * 2
+                  min_chars: (min / 2) |> Fulib.to_i(),
+                  max_chars: (max / 2) |> Fulib.to_i(),
+                  min: min,
+                  max: max
                 )
               else
                 Fulib.Translator.dgettext(
