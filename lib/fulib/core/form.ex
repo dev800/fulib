@@ -9,6 +9,10 @@ defmodule Fulib.Form do
             human_errors: [],
             errors: []
 
+  def validate_fields(changeset, rules \\ %{}, rule_keys \\ %{}) do
+    changeset |> Fulib.Validate.validate_changeset(rules, rule_keys)
+  end
+
   def put_entries(changeset, entries \\ []) do
     entries = entries |> Map.new()
 

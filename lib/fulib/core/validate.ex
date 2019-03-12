@@ -36,7 +36,10 @@ defmodule Fulib.Validate do
     end
   end
 
-  def validate_changeset(%Ecto.Changeset{} = changeset, rules \\ %{}) do
+  @doc """
+  根据rule_keys里的对应关系，找到params key对应的rule key
+  """
+  def validate_changeset(%Ecto.Changeset{} = changeset, rules \\ %{}, rule_keys \\ %{}) do
     if Fulib.blank?(rules) do
       changeset
     else
@@ -49,8 +52,10 @@ defmodule Fulib.Validate do
         |> Fulib.get(field)
         |> case do
           {_field, value_type} ->
+            rule_key = rule_keys |> Fulib.get(field) |> Kernel.||(field)
+
             value
-            |> validate_value(value_type, rules |> Fulib.get(field, %{}))
+            |> validate_value(value_type, rules |> Fulib.get(rule_key, %{}))
             |> Enum.reduce(changeset, fn validate, changeset ->
               case validate do
                 {:error, reason, message} ->

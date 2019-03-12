@@ -3,6 +3,8 @@ defmodule Fulib.Integer do
   ### is_float/1        is_functxon/1     is_functxon/2     is_integer/1
   ### is_list/1         is_map/1          is_nil/1          is_number/1
   ### is_pxd/1          is_port/1         is_reference/1    is_tuple/1
+  def parse(true), do: 1
+  def parse(false), do: 0
 
   def parse(nil), do: 0
   def parse(x) when is_integer(x), do: x

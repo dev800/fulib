@@ -328,11 +328,10 @@ defmodule Fulib.Model.Extends do
           end
 
           defp _query_one(queryable, opts) do
-            query = Ecto.Query.from(records in queryable, limit: ^1)
-            query |> _parse_query_opts(opts)
+            Ecto.Query.from(records in queryable, limit: ^1) |> _parse_query(opts)
           end
 
-          defp _parse_query_opts(queryable, opts) do
+          defp _parse_query(queryable, opts) do
             if Fulib.present?(preload = opts[:preload]) do
               Ecto.Query.from(records in queryable, preload: ^preload)
             else
@@ -896,7 +895,7 @@ defmodule Fulib.Model.Extends do
                   select: records
                 )
 
-              query = query |> _parse_query_opts(opts)
+              query = query |> _parse_query(opts)
 
               records =
                 if slave do

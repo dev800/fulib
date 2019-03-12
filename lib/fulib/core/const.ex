@@ -345,14 +345,14 @@ defmodule Fulib.Const do
   def email_regex, do: @email_regex
 
   def email_match?(str) do
-    @email_regex |> Regex.match?(str)
+    Fulib.present?(str) && @email_regex |> Regex.match?(str)
   end
 
   @doc "纯数字的正则表达式"
   def pure_number_regex, do: @pure_number_regex
 
   def pure_number_match?(str) do
-    @pure_number_regex |> Regex.match?(str)
+    Fulib.present?(str) && @pure_number_regex |> Regex.match?(str)
   end
 
   @doc "整数的正则表达式"
