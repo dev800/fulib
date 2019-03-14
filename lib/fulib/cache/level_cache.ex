@@ -1,4 +1,5 @@
 defmodule Fulib.LevelCache do
+  import ShorterMaps
   alias Fulib.GlobalCache
 
   @missing_value :_____missing_____
@@ -13,14 +14,14 @@ defmodule Fulib.LevelCache do
         |> GlobalCache.get()
         |> case do
           nil ->
-            default
+            {:ok, :missing, default}
 
-          other ->
-            other
+          value ->
+            {:ok, :global_hit, value}
         end
 
-      other ->
-        other
+      value ->
+        {:ok, :process_hit, value}
     end
   end
 
@@ -31,32 +32,38 @@ defmodule Fulib.LevelCache do
     key
     |> _get(default)
     |> case do
-      @missing_value ->
+      {:ok, _, @missing_value} ->
         default
 
-      other ->
-        other
+      {:ok, _, value} ->
+        value
     end
   end
 
   defp _get_many(keys) do
     keys = keys |> Fulib.to_array()
 
-    hits =
+    {process_hits, global_hits} =
       keys
-      |> Enum.reduce(%{}, fn key, hits ->
+      |> Enum.reduce({%{}, %{}}, fn key, {process_hits, global_hits} ->
         key
         |> _get()
         |> case do
-          nil ->
-            hits
+          {:ok, :missing, _default} ->
+            {process_hits, global_hits}
 
-          hit ->
-            hits |> Map.put(key, hit)
+          {:ok, :global_hit, hit} ->
+            {process_hits, global_hits |> Map.put(key, hit)}
+
+          {:ok, _, hit} ->
+            {process_hits |> Map.put(key, hit), global_hits}
         end
       end)
 
-    missing_keys = keys |> Kernel.--(Map.keys(hits))
+    missing_keys =
+      keys
+      |> Kernel.--(Map.keys(process_hits))
+      |> Kernel.--(Map.keys(global_hits))
 
     missing_cache_keys_index =
       missing_keys
@@ -64,26 +71,35 @@ defmodule Fulib.LevelCache do
         pairs |> Map.put(global_cache_key(key), key)
       end)
 
-    missing_cache_keys_index
-    |> Map.keys()
-    |> GlobalCache.get_many()
-    |> Enum.reduce(hits, fn {cache_key, value}, hits ->
+    global_hits =
       missing_cache_keys_index
-      |> Fulib.get(cache_key)
-      |> case do
-        nil ->
-          hits
+      |> Map.keys()
+      |> GlobalCache.get_many()
+      |> Enum.reduce(global_hits, fn {cache_key, value}, global_hits ->
+        missing_cache_keys_index
+        |> Fulib.get(cache_key)
+        |> case do
+          nil ->
+            global_hits
 
-        key ->
-          hits |> Map.put(key, value)
-      end
-    end)
+          key ->
+            global_hits |> Map.put(key, value)
+        end
+      end)
+
+    ~M(process_hits, global_hits)
   end
 
   def get_many(keys) do
     keys
     |> _get_many()
-    |> _clean_missing()
+    |> case do
+      ~M(process_hits, global_hits) ->
+        process_hits |> _clean_missing() |> Map.merge(_clean_missing(global_hits))
+
+      _ ->
+        %{}
+    end
   end
 
   defp _clean_missing(pairs) do
@@ -101,10 +117,10 @@ defmodule Fulib.LevelCache do
 
   def delete(key) do
     process_delete(key)
-    _global_cache_delete(key)
+    global_cache_delete(key)
   end
 
-  defp _global_cache_delete(key) do
+  def global_cache_delete(key) do
     key
     |> global_cache_key()
     |> GlobalCache.set(@missing_value, ttl: 3600)
@@ -120,10 +136,12 @@ defmodule Fulib.LevelCache do
 
     case value do
       nil ->
-        key |> _global_cache_delete()
+        key |> global_cache_delete()
 
       value ->
-        GlobalCache.set(global_cache_key(key), value)
+        key
+        |> global_cache_key()
+        |> GlobalCache.set(value)
     end
 
     value
@@ -131,8 +149,12 @@ defmodule Fulib.LevelCache do
 
   def fetch_many(keys, missing_fn) do
     keys = keys |> Fulib.to_array()
-    hits = _get_many(keys)
-    missing_keys = keys |> Kernel.--(Map.keys(hits))
+    ~M(process_hits, global_hits) = keys |> _get_many()
+
+    missing_keys =
+      keys
+      |> Kernel.--(Map.keys(process_hits))
+      |> Kernel.--(Map.keys(global_hits))
 
     missings_index =
       missing_keys
@@ -140,31 +162,40 @@ defmodule Fulib.LevelCache do
       |> Kernel.||(%{})
       |> Map.take(missing_keys)
 
+    Enum.each(global_hits, fn {key, value} ->
+      process_put(key, value)
+    end)
+
     Enum.each(missing_keys, fn key ->
       put(key, Fulib.get(missings_index, key))
     end)
 
-    hits
+    process_hits
     |> Map.merge(missings_index)
     |> _clean_missing()
+    |> Map.merge(_clean_missing(global_hits))
   end
 
   def fetch(key, missing_fn) do
     key
     |> _get()
     |> case do
-      nil ->
+      {:ok, :missing, _default} ->
         put(key, missing_fn.())
 
-      other ->
-        other
+      {:ok, :global_hit, value} ->
+        process_put(key, value)
+        value
+
+      {:ok, _, value} ->
+        value
     end
     |> case do
       @missing_value ->
         nil
 
-      other ->
-        other
+      value ->
+        value
     end
   end
 
@@ -183,9 +214,13 @@ defmodule Fulib.LevelCache do
   end
 
   def process_put(key, value) do
-    key
-    |> process_cache_key()
-    |> Process.put(value)
+    key |> process_cache_key()
+
+    if is_nil(value) do
+      key |> Process.delete()
+    else
+      key |> Process.put(value)
+    end
 
     value
   end
@@ -202,7 +237,7 @@ defmodule Fulib.LevelCache do
     end
   end
 
-  def process_cache_key(key), do: "LV_PD:#{key}"
+  def process_cache_key(key), do: "Fulib.LV_PCK:#{key}"
 
-  def global_cache_key(key), do: "LV_GL:#{key}"
+  def global_cache_key(key), do: "Fulib.LV_GCK:#{key}"
 end
