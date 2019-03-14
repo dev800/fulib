@@ -46,6 +46,12 @@ defmodule Fulib.Model.Extends do
       Module.register_attribute(extends_module, :polymorphic_mapping, accumulate: false)
       Module.put_attribute(extends_module, :polymorphic_mapping, polymorphic_mapping)
 
+      # Begin cache_version
+      cache_version = opts[:cache_version] || "0"
+
+      Module.register_attribute(extends_module, :cache_version, accumulate: false)
+      Module.put_attribute(extends_module, :cache_version, cache_version)
+
       # Begin uuid_default_length
       uuid_default_length = opts[:uuid_default_length] || 10
 
@@ -289,6 +295,94 @@ defmodule Fulib.Model.Extends do
           end
 
           ######### END Find Each #################################################
+          defp _cache_key(primary_value) do
+            "#{@extends_module}#m#{@cache_version}_#{primary_value}"
+          end
+
+          def cache_delete(nil), do: nil
+
+          def cache_delete(%{__meta__: _} = record) do
+            record
+            |> Fulib.get(@repo_primary_key)
+            |> cache_delete()
+          end
+
+          def cache_delete(primary_value) do
+            primary_value
+            |> _cache_key()
+            |> Fulib.LevelCache.delete()
+          end
+
+          def cache_set(nil), do: nil
+
+          def cache_set(record) do
+            record
+            |> Fulib.get(@repo_primary_key)
+            |> _cache_key()
+            |> Fulib.LevelCache.put(record)
+          end
+
+          def cache_fetch(nil), do: nil
+          def cache_fetch([]), do: []
+
+          def cache_fetch([_ | _] = primary_values) do
+            cache_keys_index =
+              primary_values
+              |> Enum.map(fn k -> {_cache_key(k), k} end)
+              |> Map.new()
+
+            cache_keys_reverse = cache_keys_index |> Fulib.reverse()
+
+            cache_keys_index
+            |> Map.keys()
+            |> Fulib.LevelCache.fetch_many(fn missing_keys ->
+              missing_keys
+              |> Enum.reduce([], fn cache_key, missing_keys ->
+                cache_keys_index
+                |> Fulib.get(cache_key)
+                |> case do
+                  nil ->
+                    missing_keys
+
+                  key ->
+                    missing_keys ++ [key]
+                end
+              end)
+              |> find()
+              |> Enum.reduce(%{}, fn record, pairs ->
+                primary_value = record |> Fulib.get(@repo_primary_key)
+
+                cache_keys_reverse
+                |> Fulib.get(primary_value)
+                |> case do
+                  nil ->
+                    pairs
+
+                  cache_key ->
+                    pairs |> Map.put(cache_key, record)
+                end
+              end)
+            end)
+            |> Enum.reduce(%{}, fn {cache_key, record}, pairs ->
+              cache_keys_index
+              |> Fulib.get(cache_key)
+              |> case do
+                nil ->
+                  pairs
+
+                key ->
+                  pairs |> Map.put(key, record)
+              end
+            end)
+          end
+
+          def cache_fetch(primary_value) do
+            primary_value
+            |> _cache_key()
+            |> Fulib.LevelCache.fetch(fn ->
+              find(primary_value)
+            end)
+          end
 
           def slave_find(primary_values, opts \\ []) do
             _find(@extends_module, primary_values, true, opts)
