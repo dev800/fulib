@@ -225,12 +225,12 @@ defmodule Fulib.LevelCache do
     value
   end
 
-  def process_fetch(key, process_fn) do
+  def process_fetch(key, missing_fn) do
     key
     |> process_get()
     |> case do
       nil ->
-        process_put(key, process_fn.())
+        process_put(key, missing_fn.())
 
       other ->
         other

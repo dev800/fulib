@@ -5,7 +5,7 @@ defmodule Fulib.Mixfile do
     [
       app: :fulib,
       name: "Fulib",
-      version: "0.1.16",
+      version: "0.1.18",
       elixir: "~> 1.4",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
