@@ -74,6 +74,12 @@ defmodule Fulib.Form do
     end)
   end
 
+  def get_params_with_context(changeset, resolution, fields, opts \\ []) do
+    changeset
+    |> get_params(fields, opts)
+    |> Fulib.put(:__context__, resolution |> Fulib.get(:context) || %{})
+  end
+
   @doc """
   ## opts
 

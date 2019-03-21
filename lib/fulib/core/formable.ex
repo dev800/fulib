@@ -229,6 +229,9 @@ defmodule Fulib.Formable do
           defdelegate get_param(changeset, field, default \\ nil), to: Fulib.Form
           defdelegate get_params(changeset, fields, opts \\ []), to: Fulib.Form
           defdelegate get_changes(changeset, fields, opts \\ []), to: Fulib.Form
+
+          defdelegate get_params_with_context(changeset, resolution, fields, opts \\ []),
+            to: Fulib.Form
         end
       )
     end

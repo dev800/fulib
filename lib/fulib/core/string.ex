@@ -77,7 +77,7 @@ defmodule Fulib.String do
   def truncate(nil, _options, do: _block), do: ""
 
   def truncate(text, opts, do: block) when is_map(opts) or is_list(opts) do
-    text_length = opts |> Fulib.get(:length, 30, 30) |> Fulib.to_i()
+    text_length = opts |> Fulib.get(:length, 32, 32) |> Fulib.to_i()
     html_escaped = opts |> Fulib.get(:html_escape, false, false) |> Fulib.to_boolean()
 
     if String.length(text) < text_length do
@@ -180,6 +180,22 @@ defmodule Fulib.String do
     Fulib.Const.words_regex()
     |> Regex.scan(value |> Fulib.to_s())
     |> List.flatten()
-    |> Enum.join("")
+    |> Enum.join()
+  end
+
+  def summary(nil), do: ""
+
+  def summary(string) do
+    string
+    # more space
+    |> String.replace(~r/(\t|\r|\n)/, " ")
+    |> String.replace(~r/(\s{2,})/, " ")
+    # image
+    |> String.replace(~r/\!\[.*?\]\(.*?\)/, "")
+    # link
+    |> String.replace(~r/\[(.*?)\]\(.*?\)/, "\\1")
+    # leading formats
+    |> String.replace(~r/(^|\n)(>\s*|#+\s*|\*\s+)/, "\\1")
+    |> String.trim()
   end
 end

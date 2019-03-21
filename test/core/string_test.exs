@@ -18,4 +18,16 @@ defmodule Fulib.StringTest do
                "\n  User Invisible\n\n"
     end
   end
+
+  describe "summary" do
+    test "ok" do
+      assert Fulib.String.summary("   FFF      FFF   ") == "FFF FFF"
+
+      assert Fulib.String.summary("""
+             FF
+                FFF GenStage
+             😀 fff   fff 😈
+             """) == "FF FFF GenStage 😀 fff fff 😈"
+    end
+  end
 end
