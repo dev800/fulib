@@ -37,6 +37,10 @@ defmodule Fulib.HTMLParse do
 
   def parse(html_tree, _opts), do: html_tree
 
+  def ergodic_map(html_trees, collect_fn) do
+    ergodic_map(html_trees, [], collect_fn)
+  end
+
   def ergodic_map(html_trees, collections, collect_fn)
       when is_list(html_trees) and is_function(collect_fn) do
     current_collections =
@@ -79,25 +83,24 @@ defmodule Fulib.HTMLParse do
   end
 
   def transform(html_tree, transformation) do
-    _transformation(html_tree, transformation, %{ancestors: []})
+    _transform(html_tree, transformation, %{ancestors: []})
   end
 
-  defp _transformation({name, attrs, rest}, transformation, opts) do
-    ancestors = opts |> Map.get(:ancestors, [])
-    ancestors = List.insert_at(ancestors, -1, name)
+  defp _transform({name, attrs, rest}, transformation, opts) do
+    ancestors = opts |> Map.get(:ancestors, []) |> Kernel.++([name])
     opts = opts |> Map.put(:ancestors, ancestors)
 
     {new_name, new_attrs, new_rest} = transformation.({name, attrs, rest}, opts)
 
     new_rest =
       Enum.map(new_rest, fn html_tree ->
-        _transformation(html_tree, transformation, opts)
+        _transform(html_tree, transformation, opts)
       end)
 
     {new_name, new_attrs, new_rest}
   end
 
-  defp _transformation(other, transformation, opts) do
+  defp _transform(other, transformation, opts) do
     transformation.(other, opts)
   end
 

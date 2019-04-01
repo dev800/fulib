@@ -23,7 +23,7 @@ defmodule Fulib.FormableTest do
       |> validate_required(@required)
     end
 
-    def submit(_parent, params \\ %{}, _resolution) do
+    def submit(params \\ %{}, _resolution) do
       require IEx
       changeset = params |> from()
 
@@ -42,7 +42,7 @@ defmodule Fulib.FormableTest do
     end
 
     test "translate" do
-      form = UserInfoUpdateForm.submit(nil, %{}, nil)
+      form = UserInfoUpdateForm.submit(%{}, nil)
       form = UserInfoUpdateForm.translate(form)
 
       assert form.human_fields == %{
