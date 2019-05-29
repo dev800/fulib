@@ -433,6 +433,12 @@ defmodule Fulib.Model.Extends do
             end
           end
 
+          def like(query, field_key, string) do
+            Ecto.Query.from(records in query,
+              where: like(field(records, ^field_key), ^string)
+            )
+          end
+
           @array_where_types [:array, :enums_type]
 
           @doc """
@@ -1012,31 +1018,7 @@ defmodule Fulib.Model.Extends do
           end
 
           def queryable_get_by(queryable, clauses \\ [], opts \\ []) do
-            repo_module().get_by(_query_one(queryable, opts), clauses, opts)
-          end
-
-          def get_by!(clauses \\ [], opts \\ []) do
-            @extends_module |> queryable_get_by!(clauses, opts)
-          end
-
-          def queryable_get_by!(queryable, clauses \\ [], opts \\ []) do
-            repo_module().get_by!(_query_one(queryable, opts), clauses, opts)
-          end
-
-          def slave_get_by(clauses \\ [], opts \\ []) do
-            @extends_module |> slave_queryable_get_by(clauses, opts)
-          end
-
-          def slave_queryable_get_by(queryable, clauses \\ [], opts \\ []) do
-            repo_module().slave().get_by(_query_one(queryable, opts), clauses, opts)
-          end
-
-          def slave_get_by!(clauses \\ [], opts \\ []) do
-            @extends_module |> slave_queryable_get_by!(clauses, opts)
-          end
-
-          def slave_queryable_get_by!(queryable, clauses \\ [], opts \\ []) do
-            repo_module().slave().get_by!(_query_one(queryable, opts), clauses, opts)
+            queryable |> where(clauses) |> first(opts)
           end
 
           def last, do: last(@extends_module, [])

@@ -2,6 +2,8 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :money, :default_currency, :CNY
+
 config :fulib, Fulib.LocalCache, gc_interval: 86_400
 
 config :fulib, Fulib.GlobalCache,
@@ -12,7 +14,7 @@ config :fulib, Fulib.GlobalCache,
       host: System.get_env("REDIS_HOST") || "127.0.0.1",
       port: (System.get_env("REDIS_PORT") || "6379") |> String.to_integer(),
       pool_size: (System.get_env("REDIS_POOL") || "10") |> String.to_integer(),
-      password: (System.get_env("REDIS_PASSWORD") || nil)
+      password: System.get_env("REDIS_PASSWORD") || nil
     ]
   ]
 

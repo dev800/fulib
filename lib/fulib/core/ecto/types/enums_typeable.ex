@@ -99,9 +99,29 @@ defmodule Fulib.Ecto.EnumsTypeable do
             @translator.dgettext(@translator_domain, "#{@translator_root}#{key}")
           end
 
-          def select_options do
+          def select_options(style \\ :array, key_type \\ :atom)
+
+          def select_options(:array, :atom) do
             Enum.map(@values, fn {key, _} ->
               [get_human(key), key]
+            end)
+          end
+
+          def select_options(:array, :string) do
+            Enum.map(@values, fn {key, _} ->
+              [get_human(key), Fulib.to_s(key)]
+            end)
+          end
+
+          def select_options(:map, :atom) do
+            Enum.map(@values, fn {key, _} ->
+              %{name: get_human(key), key: key}
+            end)
+          end
+
+          def select_options(:map, :string) do
+            Enum.map(@values, fn {key, _} ->
+              %{name: get_human(key), key: Fulib.to_s(key)}
             end)
           end
 

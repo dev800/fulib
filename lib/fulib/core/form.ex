@@ -80,6 +80,10 @@ defmodule Fulib.Form do
     |> Fulib.put(:__context__, resolution |> Fulib.get(:context) || %{})
   end
 
+  def get_context_from_params(params, key) do
+    params |> Fulib.get(:__context__) |> Fulib.get(key)
+  end
+
   @doc """
   ## opts
 

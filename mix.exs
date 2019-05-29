@@ -46,13 +46,15 @@ defmodule Fulib.Mixfile do
         :logger_file_backend,
         :gettext,
         :gen_stage,
-        :liquid
+        :liquid,
+        :money
       ]
     ]
   end
 
   defp deps do
     [
+      {:money, "~> 1.0"},
       {:liquid, "~> 0.9"},
       {:nebulex, "~> 1.0"},
       {:gen_stage, "~> 0.14"},

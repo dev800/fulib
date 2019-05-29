@@ -117,7 +117,7 @@ defmodule Fulib.Ecto.BitwiseTypeable do
 
           def v2k, do: @v2k
 
-          def type, do: :"Fulib.Ecto.EnumsTypeable"
+          def type, do: :"Fulib.Ecto.BitwiseTypeable"
 
           def cast(nil), do: {:ok, []}
           def cast([]), do: {:ok, []}

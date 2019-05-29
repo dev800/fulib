@@ -5,7 +5,7 @@ defmodule Fulib.Validations.Presence do
   def validate(value, options \\ []) do
     Fulib.Validate.unless_skipping value, options do
       if Fulib.blank?(value) do
-        {:error, :not_present, Fulib.Translator.dgettext("validate", "Not Present")}
+        {:error, :not_present, Fulib.Translator.dgettext("validate", "Not present")}
       else
         :ok
       end

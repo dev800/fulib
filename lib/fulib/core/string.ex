@@ -198,4 +198,12 @@ defmodule Fulib.String do
     |> String.replace(~r/(^|\n)(>\s*|#+\s*|\*\s+)/, "\\1")
     |> String.trim()
   end
+
+  def percent_format(value) do
+    "%.2f" |> Fulib.Printf.sprintf([value * 100]) |> String.replace(~r"\.?+0+$", "", global: true)
+  end
+
+  def price_format(value) do
+    "%.2f" |> Fulib.Printf.sprintf([value]) |> String.replace(~r"\.?+0+$", "", global: true)
+  end
 end

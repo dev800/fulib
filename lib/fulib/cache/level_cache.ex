@@ -4,7 +4,7 @@ defmodule Fulib.LevelCache do
 
   @missing_value :_____missing_____
 
-  def _get(key, default \\ nil) do
+  defp _get(key, default \\ nil) do
     key
     |> process_get()
     |> case do

@@ -10,7 +10,7 @@ msgstr "不存在"
 msgid "Not Blank"
 msgstr "应该为空"
 
-msgid "Not Present"
+msgid "Not present"
 msgstr "不能为空"
 
 msgid "Must be a number"
