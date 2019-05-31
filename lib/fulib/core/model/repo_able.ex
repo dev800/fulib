@@ -3,7 +3,7 @@ defmodule Fulib.Model.RepoAble do
     quote do
       import Fulib.Model.RepoAble
 
-      @default_transaction_retry_times 10
+      @defaulttransaction_retry_times 10
 
       _opts = unquote(opts)
 
@@ -36,11 +36,11 @@ defmodule Fulib.Model.RepoAble do
           * opts
 
             - `:optimistic_lock_wrapper` 乐观并发控制包装函数 不传时不启用乐观并发控制
-            - `:retry_times` 乐观锁失败时的重试次数，默认为 #{@default_transaction_retry_times}
+            - `:retry_times` 乐观锁失败时的重试次数，默认为 #{@defaulttransaction_retry_times}
           """
           def changeset_transaction(%Ecto.Changeset{} = changeset, transaction_fn, opts \\ []) do
             optimistic_lock_wrapper = opts[:optimistic_lock_wrapper]
-            retry_times = opts[:retry_times] || @default_transaction_retry_times
+            retry_times = opts[:retry_times] || @defaulttransaction_retry_times
 
             transaction_fn =
               if optimistic_lock_wrapper do
@@ -55,7 +55,7 @@ defmodule Fulib.Model.RepoAble do
               end)
             end
 
-            case _transaction_retry(retry_fn, retry_times) do
+            case transaction_retry(retry_fn, retry_times) do
               {:ok, changeset} ->
                 changeset
 
@@ -64,15 +64,15 @@ defmodule Fulib.Model.RepoAble do
             end
           end
 
-          defp _transaction_retry(fun, retry_times) do
+          defp transaction_retry(fun, retry_times) do
             if retry_times > 0 do
               try do
                 Process.sleep(5)
                 fun.()
               rescue
                 Ecto.StaleEntryError ->
-                  Fulib.log_error([__MODULE__, :_transaction_retry, retry_times])
-                  _transaction_retry(fun, retry_times - 1)
+                  Fulib.log_error([__MODULE__, :transaction_retry, retry_times])
+                  transaction_retry(fun, retry_times - 1)
               end
             end
           end
@@ -86,21 +86,21 @@ defmodule Fulib.Model.RepoAble do
             fn call_fn ->
               fn ->
                 locker = before_fn.()
-                call_result = call_fn.()
+                callback = call_fn.()
 
-                call_result
+                callback
                 |> transaction_ok?
                 |> if do
                   after_fn.(locker)
                 end
 
-                call_result
+                callback
               end
             end
           end
 
-          def transaction_ok?(result) do
-            case result do
+          def transaction_ok?(callback) do
+            case callback do
               %Ecto.Changeset{} = changeset -> changeset.valid?
               {:ok, %Ecto.Changeset{} = changeset} -> changeset.valid?
               _ -> false

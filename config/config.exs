@@ -2,8 +2,6 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :money, :default_currency, :CNY
-
 config :fulib, Fulib.LocalCache, gc_interval: 86_400
 
 config :fulib, Fulib.GlobalCache,

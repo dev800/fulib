@@ -3,6 +3,10 @@ defmodule Fulib do
   Documentation for Fulib.
   """
 
+  def default_currency do
+    Application.get_env(:money, :default_currency, :CNY)
+  end
+
   def each_do(item, opts \\ %{}) do
     if is_function(opts[:each_do]) do
       opts[:each_do].(item)

@@ -2,7 +2,7 @@
 # This is not yet ready in any way.
 #
 #
-# TODOS:
+# TODO:
 #
 # - add these attributes allowed on all elements:
 #
