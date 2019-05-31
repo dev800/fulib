@@ -60,7 +60,7 @@ defmodule Fulib.Cipher do
   """
   def decrypt(crypted, keyphrase \\ nil, ivphrase \\ nil) when is_binary(crypted) do
     try do
-      {:ok, decoded} = crypted |> URI.decode_www_form() |> Base.decode64()
+      {:ok, decoded} = crypted |> URI.decode_www_form() |> Base.decode64!()
       _decrypt(decoded, keyphrase, ivphrase)
     rescue
       _ ->
@@ -292,7 +292,7 @@ defmodule Fulib.Cipher do
   end
 
   # Legacy support for blocks previously padded with whitespace
-  defp depad(str) do
+  def depad(str) do
     case String.last(str) do
       " " -> depad_v1(str)
       _ -> depad_v2(str)

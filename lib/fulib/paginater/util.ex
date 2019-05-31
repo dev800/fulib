@@ -169,7 +169,7 @@ defmodule Fulib.Paginater.Util do
       base64_string =
         conditions
         |> Plug.Conn.Query.encode()
-        |> :base64.encode()
+        |> Base.encode64()
 
       ["base64", base64_string] |> Enum.join("-")
     else
@@ -191,7 +191,7 @@ defmodule Fulib.Paginater.Util do
     case page_cursor |> Fulib.to_s() |> String.split("-") do
       ["base64", tails] ->
         tails
-        |> :base64.decode()
+        |> Base.decode64!()
         |> Plug.Conn.Query.decode()
         |> parse_page_cursor
 

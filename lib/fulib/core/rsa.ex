@@ -142,7 +142,7 @@ defmodule Fulib.RSA do
   @spec decrypt(String.t(), private_key) :: {atom, String.t()}
   def decrypt(cipher_msg, private_key \\ nil) do
     try do
-      {:ok, cipher_bytes} = Base.decode64(cipher_msg)
+      {:ok, cipher_bytes} = Base.decode64!(cipher_msg)
       {:ok, priv_key} = loads(private_key)
       {:ok, priv_key_seq} = PrivateKey.as_sequence(priv_key)
       {:ok, :public_key.decrypt_private(cipher_bytes, priv_key_seq)}
@@ -154,7 +154,7 @@ defmodule Fulib.RSA do
   @spec public_decrypt(String.t(), public_key) :: {atom, String.t()}
   def public_decrypt(cipher_msg, public_key \\ nil) do
     try do
-      {:ok, cipher_bytes} = Base.decode64(cipher_msg)
+      {:ok, cipher_bytes} = Base.decode64!(cipher_msg)
       {:ok, pub_key} = loads(public_key)
       {:ok, pub_key_seq} = PublicKey.as_sequence(pub_key)
       {:ok, :public_key.decrypt_public(cipher_bytes, pub_key_seq)}
