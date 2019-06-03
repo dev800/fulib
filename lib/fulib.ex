@@ -3,6 +3,8 @@ defmodule Fulib do
   Documentation for Fulib.
   """
 
+  def env(), do: Application.get_env(:fulib, :env, Mix.env())
+
   def default_currency do
     Application.get_env(:money, :default_currency, :CNY)
   end

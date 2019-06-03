@@ -4,6 +4,8 @@ use Mix.Config
 
 config :fulib, Fulib.LocalCache, gc_interval: 86_400
 
+config :fulib, :env, Mix.env()
+
 config :fulib, Fulib.GlobalCache,
   enable: true,
   adapter: :redis,
