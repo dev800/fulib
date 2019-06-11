@@ -40,12 +40,6 @@ defmodule Fulib.Model.Extends do
       Module.register_attribute(extends_module, :repo_primary_type, accumulate: false)
       Module.put_attribute(extends_module, :repo_primary_type, repo_primary_type)
 
-      # Begin polymorphic_mapping
-      polymorphic_mapping = opts[:polymorphic_mapping] || %{}
-
-      Module.register_attribute(extends_module, :polymorphic_mapping, accumulate: false)
-      Module.put_attribute(extends_module, :polymorphic_mapping, polymorphic_mapping)
-
       # Begin cache_version
       cache_version = opts[:cache_version] || "0"
 
@@ -129,22 +123,6 @@ defmodule Fulib.Model.Extends do
             |> :rand.uniform()
             |> Fulib.to_s()
             |> String.pad_trailing(length, "0")
-          end
-
-          def target_type_value do
-            if value = @polymorphic_mapping |> get_in(["#{target_module()}", :value]) do
-              value
-            else
-              raise "#{@extends_module} not config target_type_value"
-            end
-          end
-
-          def target_type_key do
-            if key = @polymorphic_mapping |> get_in(["#{target_module()}", :key]) do
-              key
-            else
-              raise "#{@extends_module} not config target_type_key"
-            end
           end
 
           def new do
@@ -1036,6 +1014,7 @@ defmodule Fulib.Model.Extends do
             order_by = opts |> Fulib.get(:order_by)
             slave = opts |> Fulib.get(:slave)
             repo_module = if slave, do: repo_module(), else: repo_module().slave()
+            queryable = _parse_query(queryable, opts)
 
             if limit do
               Ecto.Query.last(queryable, order_by) |> Ecto.Query.limit(^limit) |> repo_module.all
@@ -1059,6 +1038,7 @@ defmodule Fulib.Model.Extends do
             order_by = opts |> Fulib.get(:order_by)
             slave = opts |> Fulib.get(:slave)
             repo_module = if slave, do: repo_module(), else: repo_module().slave()
+            queryable = _parse_query(queryable, opts)
 
             if limit do
               Ecto.Query.first(queryable, order_by) |> Ecto.Query.limit(^limit) |> repo_module.all

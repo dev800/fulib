@@ -10,8 +10,8 @@ msgstr "Not Found"
 msgid "Not Blank"
 msgstr "Not Blank"
 
-msgid "Not present"
-msgstr "Not present"
+msgid "not present"
+msgstr "not present"
 
 msgid "Must be a number"
 msgstr "Must be a number"
