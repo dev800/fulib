@@ -34,17 +34,21 @@ defmodule Fulib.String do
   * emoji算2位
   """
   def chars_length(string, opts \\ []) do
-    string
-    |> String.split("", trim: Fulib.get(opts, :trim, true))
-    |> Enum.reduce(0, fn char, length ->
-      current_length =
-        case char |> byte_size() do
-          1 -> 1
-          _ -> 2
-        end
+    if string do
+      string
+      |> String.split("", trim: Fulib.get(opts, :trim, true))
+      |> Enum.reduce(0, fn char, length ->
+        current_length =
+          case char |> byte_size() do
+            1 -> 1
+            _ -> 2
+          end
 
-      length + current_length
-    end)
+        length + current_length
+      end)
+    else
+      0
+    end
   end
 
   def recase(value), do: value

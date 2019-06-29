@@ -60,8 +60,10 @@ defmodule Fulib.Cipher do
   """
   def decrypt(crypted, keyphrase \\ nil, ivphrase \\ nil) when is_binary(crypted) do
     try do
-      {:ok, decoded} = crypted |> URI.decode_www_form() |> Base.decode64!()
-      _decrypt(decoded, keyphrase, ivphrase)
+      crypted
+      |> URI.decode_www_form()
+      |> Base.decode64!()
+      |> _decrypt(keyphrase, ivphrase)
     rescue
       _ ->
         {:error, "Could not decode string '#{crypted}'. Maybe it was not transferred properly."}

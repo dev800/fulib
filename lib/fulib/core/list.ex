@@ -2,15 +2,18 @@ defmodule Fulib.List do
   @doc """
   将一个数组，按照每个x元素，进行分组
 
-  # Params
+  ## Params
 
-  * valus 数组元素
-  * number 每组的数量
-  * opts
-  - :fill_skip  是否跳过自动填充
-  - :fill_with  用什么数据进行填充
+  ### valus 数组元素
 
-  # Return
+  ### number 每组的数量
+
+  ### opts
+
+  * `:fill_skip`  是否跳过自动填充
+  * `:fill_with`  用什么数据进行填充
+
+  ## Return
 
   返回一个二维数组
   """
@@ -52,6 +55,20 @@ defmodule Fulib.List do
     Enum.reduce(list_a, false, fn i, mixed ->
       mixed || Enum.member?(list_b, i)
     end)
+  end
+
+  @doc """
+  取两个数组的交集
+  """
+  def intersection(list_a, list_b) do
+    list_a -- list_a -- list_b
+  end
+
+  @doc """
+  取两个数组的并集
+  """
+  def union(list_a, list_b) do
+    list_a ++ (list_b -- list_a)
   end
 
   @doc """
