@@ -417,6 +417,16 @@ defmodule Fulib.Model.Extends do
             )
           end
 
+          def distinct(fields) do
+            @extends_module |> distinct(fields)
+          end
+
+          def distinct(queryable, fields) do
+            Enum.reduce(fields, queryable, fn {k, v}, f ->
+              Ecto.Query.from(records in queryable, distinct: field(records, ^f))
+            end)
+          end
+
           @array_where_types [:array, :enums_type]
 
           @doc """
@@ -1094,6 +1104,22 @@ defmodule Fulib.Model.Extends do
           def all_where_not(queryable, binding) do
             queryable |> where_not(binding) |> repo_module().all
           end
+
+          def where_nils(queryable, [field | fields]) do
+            queryable
+            |> where({field, nil})
+            |> where_nils(fields)
+          end
+
+          def where_nils(queryable, []), do: queryable
+
+          def where_not_nils(queryable, [field | fields]) do
+            queryable
+            |> where_not({field, nil})
+            |> where_not_nils(fields)
+          end
+
+          def where_not_nils(queryable, []), do: queryable
 
           def count() do
             Ecto.Query.from(records in @extends_module) |> count()

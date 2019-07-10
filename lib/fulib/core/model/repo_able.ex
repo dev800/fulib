@@ -28,6 +28,16 @@ defmodule Fulib.Model.RepoAble do
 
           def blank?(record), do: not persisted?(record)
 
+          def do_transaction(transaction_fn) do
+            if __MODULE__.in_transaction?() do
+              {:ok, transaction_fn.()}
+            else
+              __MODULE__.transaction(fn ->
+                transaction_fn.()
+              end)
+            end
+          end
+
           @doc """
           执行数据库的的事务
 
