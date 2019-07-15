@@ -42,6 +42,8 @@ defimpl Fulib.Paginater, for: Ecto.Query do
   end
 
   defp _paginate(query, repo, %{page_style: :scroll} = opts) do
+    sort_type = opts[:sort_type]
+
     conditions =
       cond do
         Fulib.present?(opts[:next_cursor]) -> %{next: Util.parse_page_cursor(opts[:next_cursor])}
@@ -71,15 +73,18 @@ defimpl Fulib.Paginater, for: Ecto.Query do
       |> limit(^opts[:limit])
       |> repo.all
 
+    next_entry = if sort_type == :desc, do: entries |> List.first(), else: entries |> List.last()
+    pre_entry = if sort_type == :desc, do: entries |> List.last(), else: entries |> List.first()
+
     next_cursor =
-      if next_entry = entries |> List.last() do
+      if next_entry do
         %{next: next_entry |> scroll_conditions_fn.()}
       end
       |> Util.encode_page_cursor()
 
     pre_cursor =
-      if first_entry = entries |> List.first() do
-        %{pre: first_entry |> scroll_conditions_fn.()}
+      if pre_entry do
+        %{pre: pre_entry |> scroll_conditions_fn.()}
       end
       |> Util.encode_page_cursor()
 

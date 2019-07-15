@@ -18,7 +18,9 @@ defmodule Fulib.Paginater.Util do
     # 懒加载分页最大的页数
     page_lazy_max: 3,
     # 最大分页数，0 表示不设置上限
-    max_page: 0
+    max_page: 0,
+    # 默认排序: 默认倒序
+    sort_type: :desc
   ]
 
   def get_limit(opts \\ []) do
@@ -103,8 +105,11 @@ defmodule Fulib.Paginater.Util do
 
     %{
       limit: limit,
+      scroll_conditions_fn: params[:scroll_conditions_fn],
+      scroll_query_fn: params[:scroll_query_fn],
       next_cursor: params[:next_cursor],
       pre_cursor: params[:pre_cursor],
+      sort_type: params[:sort_type],
       current_cursor: params[:current_cursor],
       page_style: :scroll,
       is_first: is_first
@@ -127,6 +132,15 @@ defmodule Fulib.Paginater.Util do
       limit: limit,
       offset: offset,
       page_style: :limit
+    }
+  end
+
+  # 说是全部，但还是不给全部
+  def parse_opts(%{page_style: :all}) do
+    %{
+      limit: 20_000,
+      offset: 0,
+      page_style: :all
     }
   end
 
@@ -168,7 +182,7 @@ defmodule Fulib.Paginater.Util do
     if Fulib.present?(conditions) do
       base64_string =
         conditions
-        |> Plug.Conn.Query.encode()
+        |> Fulib.to_json()
         |> Base.encode64()
 
       ["base64", base64_string] |> Enum.join("-")
@@ -192,7 +206,7 @@ defmodule Fulib.Paginater.Util do
       ["base64", tails] ->
         tails
         |> Base.decode64!()
-        |> Plug.Conn.Query.decode()
+        |> Fulib.from_json()
         |> parse_page_cursor
 
       _ ->

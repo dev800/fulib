@@ -9,6 +9,11 @@ config :fulib, :env, Mix.env()
 config :fulib, Fulib.GlobalCache,
   enable: true,
   adapter: :redis,
+  conn_opts: [
+    # Redix options
+    host: "127.0.0.1",
+    port: 6379
+  ],
   pools: [
     primary: [
       host: System.get_env("REDIS_HOST") || "127.0.0.1",
