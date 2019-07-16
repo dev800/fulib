@@ -1,4 +1,6 @@
 defmodule Fulib.Value do
+  @csl_spliter ~r/(\t|\r|\n|,|"，")/
+
   def allow_nil?(opts) do
     opts |> Fulib.get(:allow_nil, true) |> Fulib.to_boolean()
   end
@@ -27,7 +29,7 @@ defmodule Fulib.Value do
 
           is_binary(value) or is_atom(value) ->
             value
-            |> String.split([",", "，", "\n"], trim: true)
+            |> String.split(@csl_spliter, trim: true)
             |> Fulib.compact(presence: true)
 
           true ->

@@ -128,7 +128,9 @@ defmodule Fulib do
   defdelegate get_index(list, ele), to: Fulib.List, as: :find_index
 
   defdelegate to_json(term, options \\ []), to: Jason, as: :encode!
-  defdelegate from_json(term, options \\ []), to: Jason, as: :decode!
+  def from_json(term, options \\ [])
+  def from_json(nil, _options), do: nil
+  defdelegate from_json(term, options), to: Jason, as: :decode!
 
   defdelegate to_yaml(term, opts \\ []), to: Fulib.String.Yaml, as: :encode!
   defdelegate from_yaml(term, opts \\ []), to: Fulib.String.Yaml, as: :decode!
