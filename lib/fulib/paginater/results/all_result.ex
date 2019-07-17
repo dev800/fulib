@@ -6,6 +6,7 @@ defmodule Fulib.Paginater.AllResult do
   alias Fulib.Paginater.AllResult
 
   defstruct entries: [],
+            total_entries: 0,
             style: :all,
             top_entries: [],
             ext: %{}

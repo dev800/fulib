@@ -109,9 +109,12 @@ defimpl Fulib.Paginater, for: Ecto.Query do
     }
   end
 
-  defp _paginate(query, repo, %{page_style: :all}) do
+  defp _paginate(query, repo, %{page_style: :all} = opts) do
+    entries = entries_with_offset(query, repo, offset: opts[:offset], limit: opts[:limit])
+
     %AllResult{
-      entries: repo.all(query)
+      entries: entries,
+      total_entries: length(entries)
     }
   end
 

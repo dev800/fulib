@@ -138,7 +138,7 @@ defmodule Fulib.Paginater.Util do
   # 说是全部，但还是不给全部
   def parse_opts(%{page_style: :all}) do
     %{
-      limit: 20_000,
+      limit: 50_000,
       offset: 0,
       page_style: :all
     }
