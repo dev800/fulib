@@ -51,6 +51,7 @@ defmodule Fulib.String do
     end
   end
 
+  # 默认不处理
   def recase(value), do: value
   def recase(value, :camel), do: Recase.to_camel(value)
   def recase(value, :constant), do: Recase.to_constant(value)
