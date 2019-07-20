@@ -22,7 +22,11 @@ defmodule Fulib.Paginater.CountResult do
             # 每一大页中，小页的页数
             page_lazy_num: 1,
             # 最大的小页数量
-            page_lazy_max: 3
+            page_lazy_max: 3,
+            # 是否第一页
+            is_first: true,
+            # 是否最后一页
+            is_last: true
 
   @type t :: %__MODULE__{}
 

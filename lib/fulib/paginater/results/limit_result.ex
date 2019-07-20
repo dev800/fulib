@@ -11,7 +11,11 @@ defmodule Fulib.Paginater.LimitResult do
             ext: %{},
             limit: 20,
             per_page: 20,
-            offset: 0
+            offset: 0,
+            # 是否第一页
+            is_first: true,
+            # 是否最后一页
+            is_last: true
 
   @type t :: %__MODULE__{}
 

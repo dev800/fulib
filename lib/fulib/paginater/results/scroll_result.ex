@@ -14,7 +14,9 @@ defmodule Fulib.Paginater.ScrollResult do
             next_cursor: "",
             pre_cursor: "",
             current_cursor: "",
+            # 是否第一页
             is_first: true,
+            # 是否最后一页
             is_last: true
 
   @type t :: %__MODULE__{}

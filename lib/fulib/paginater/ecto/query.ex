@@ -14,6 +14,16 @@ defimpl Fulib.Paginater, for: Ecto.Query do
   defp _paginate(query, repo, %{page_style: :count} = opts) do
     total_entries = total_entries(query, repo)
 
+    total_pages =
+      Util.get_total_pages(
+        total_entries,
+        limit: opts[:limit],
+        page_number: opts[:page_number],
+        page_lazy_enable?: opts[:page_lazy_enable?],
+        page_lazy_num: opts[:page_lazy_num],
+        page_lazy_max: opts[:page_lazy_max]
+      )
+
     %CountResult{
       offset: opts[:offset],
       entries: entries_with_offset(query, repo, offset: opts[:offset], limit: opts[:limit]),
@@ -23,15 +33,8 @@ defimpl Fulib.Paginater, for: Ecto.Query do
       per_page: opts[:limit],
       limit: opts[:limit],
       total_entries: total_entries,
-      total_pages:
-        Util.get_total_pages(
-          total_entries,
-          limit: opts[:limit],
-          page_number: opts[:page_number],
-          page_lazy_enable?: opts[:page_lazy_enable?],
-          page_lazy_num: opts[:page_lazy_num],
-          page_lazy_max: opts[:page_lazy_max]
-        ),
+      is_last: opts[:page_number] >= total_pages,
+      total_pages: total_pages,
       # 懒加载分页：是每一页中，分几次加载
       page_lazy_enable?: opts[:page_lazy_enable?],
       # 每一大页中，小页的页数
@@ -101,11 +104,15 @@ defimpl Fulib.Paginater, for: Ecto.Query do
   end
 
   defp _paginate(query, repo, %{page_style: :limit} = opts) do
+    entries = entries_with_offset(query, repo, offset: opts[:offset], limit: opts[:limit])
+
     %LimitResult{
-      entries: entries_with_offset(query, repo, offset: opts[:offset], limit: opts[:limit]),
+      entries: entries,
       limit: opts[:limit],
       per_page: opts[:limit],
-      offset: opts[:offset]
+      offset: opts[:offset],
+      is_first: opts[:is_first],
+      is_last: length(entries) < opts[:limit]
     }
   end
 
