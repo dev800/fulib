@@ -1,5 +1,8 @@
 defmodule Fulib.GlobalCache do
   @conf Application.get_env(:fulib, Fulib.GlobalCache) || []
+  @namespace Application.get_env(:fulib, :namespaces) |> Fulib.get(:level_cache)
+
+  def namespace, do: @namespace
 
   use Nebulex.Cache,
     otp_app: :fulib,

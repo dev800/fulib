@@ -2,6 +2,11 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :fulib, :namespaces,
+  local_cache: "#{Mix.env()}@Fulib.LocalCache.default",
+  global_cache: "#{Mix.env()}@Fulib.GlobalCache.default",
+  level_cache: "#{Mix.env()}@Fulib.LevelCache.default"
+
 config :fulib, Fulib.LocalCache, gc_interval: 86_400
 
 config :fulib, :env, Mix.env()

@@ -3,6 +3,9 @@ defmodule Fulib.LevelCache do
   alias Fulib.GlobalCache
 
   @missing_value :_____missing_____
+  @namespace Application.get_env(:fulib, :namespaces) |> Fulib.get(:level_cache)
+
+  def namespace, do: @namespace
 
   defp _get(key, default \\ nil) do
     key
@@ -237,7 +240,6 @@ defmodule Fulib.LevelCache do
     end
   end
 
-  def process_cache_key(key), do: "Fulib.LV_PCK:#{key}"
-
-  def global_cache_key(key), do: "Fulib.LV_GCK:#{key}"
+  def process_cache_key(key), do: "#{@namespace}.LV_PCK:#{key}"
+  def global_cache_key(key), do: "#{@namespace}.LV_GCK:#{key}"
 end
